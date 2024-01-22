@@ -1,14 +1,8 @@
-import { useCheckAuth } from "../../utils/auth"
-import Loading from "./Loading"
-
 const Exams = () => {
-  const checkToken = useCheckAuth()
-  return !checkToken ? (
+  return (
     <div>
       <h1>Exams</h1>
     </div>
-  ) : (
-    <Loading />
   )
 }
 

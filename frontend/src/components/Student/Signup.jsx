@@ -1,9 +1,8 @@
 import { useForm } from "react-hook-form"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useHistory } from "react-router-dom"
 import { toast } from "react-hot-toast"
-import { useState } from "react"
-import { useCheckAuth } from "../../utils/auth"
-import Loading from "./Loading"
+import { useEffect, useState } from "react"
+import { checkToken } from "../../utils/checkToken"
 
 const Signup = () => {
   const {
@@ -12,9 +11,18 @@ const Signup = () => {
     formState: { errors },
   } = useForm()
   const [loading, setloading] = useState(false)
-  const navigate = useNavigate()
+  const history = useHistory()
 
-  const checkToken = useCheckAuth()
+  useEffect(() => {
+    const checkUserLogin = async () => {
+      const isAuthenticated = await checkToken()
+      if (isAuthenticated) {
+        history.replace("/dashboard")
+      }
+    }
+
+    checkUserLogin()
+  }, [history])
 
   const onSubmit = async (data) => {
     if (data.password !== data.confirmPassword) {
@@ -46,7 +54,7 @@ const Signup = () => {
       if (response.ok) {
         setloading(false)
         toast.success("Account created successfully")
-        navigate("/student/login")
+        return history.push("/student/login")
       } else {
         const result = await response.json()
         console.log(result)
@@ -60,7 +68,7 @@ const Signup = () => {
     }
   }
 
-  return !checkToken ? (
+  return (
     <section className=" bg-slate-100 dark:bg-gray-900 md:py-10 min-h-screen">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
         <div className="w-full bg-white rounded-lg shadow-lg dark:border md:mt-0 sm:max-w-lg xl:p-0 dark:bg-gray-800 dark:border-gray-700 ">
@@ -257,8 +265,6 @@ const Signup = () => {
         </div>
       </div>
     </section>
-  ) : (
-    <Loading />
   )
 }
 

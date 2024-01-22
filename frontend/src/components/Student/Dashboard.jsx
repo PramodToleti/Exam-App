@@ -1,12 +1,8 @@
-import { useNavigate } from "react-router-dom"
-import { useCheckAuth } from "../../utils/auth"
 import toast from "react-hot-toast"
-import Loading from "./Loading"
+import { useHistory } from "react-router-dom"
 
 const Dashboard = () => {
-  const navigate = useNavigate()
-  const checkToken = useCheckAuth()
-
+  const history = useHistory()
   const handleLogout = async () => {
     try {
       const options = {
@@ -21,7 +17,7 @@ const Dashboard = () => {
 
       if (response.ok) {
         toast.success("Logged out successfully")
-        navigate("/student/login")
+        history.replace("/student/login")
       } else {
         toast.error("Something went wrong")
         const result = await response.json()
@@ -32,9 +28,7 @@ const Dashboard = () => {
     }
   }
 
-  return checkToken ? (
-    <Loading />
-  ) : (
+  return (
     <div>
       <h1>Dashboard</h1>
       <button

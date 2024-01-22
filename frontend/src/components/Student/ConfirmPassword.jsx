@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
-import { useLocation, useNavigate } from "react-router-dom"
+import { useLocation, useHistory } from "react-router-dom"
 import { toast } from "react-hot-toast"
 
 const ConfirmPassword = () => {
@@ -9,7 +9,6 @@ const ConfirmPassword = () => {
     formState: { errors },
   } = useForm()
   const [loading, setLoading] = useState(false)
-  const navigate = useNavigate()
   const location = useLocation()
   const email = location.state.email
   const inputRefs = useRef(
@@ -17,6 +16,7 @@ const ConfirmPassword = () => {
       .fill(null)
       .map(() => React.createRef())
   )
+  const history = useHistory()
   const [verificationCode, setVerificationCode] = useState([
     "",
     "",
@@ -74,7 +74,7 @@ const ConfirmPassword = () => {
       if (response.ok) {
         toast.success("Verification successful")
         setLoading(false)
-        navigate("/student/reset-password")
+        history.replace("/student/reset-password")
       } else {
         const result = await response.json()
         console.log(result)

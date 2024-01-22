@@ -1,10 +1,7 @@
-
-import { useCheckAuth } from "../../utils/auth"
+import Loading from "./Loading"
 
 const AuthRedirect = () => {
-  useCheckAuth()
-
-  return <div></div>
+  return <Loading />
 }
 
 export default AuthRedirect

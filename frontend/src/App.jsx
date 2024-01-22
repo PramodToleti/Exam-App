@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { Route, Switch } from "react-router-dom"
 import { Toaster } from "react-hot-toast"
 import Dashboard from "./components/Student/Dashboard"
 import Login from "./components/Student/Login"
@@ -8,27 +8,28 @@ import Exams from "./components/Student/Exams"
 import ForgotPassword from "./components/Student/ForgotPassword"
 import ConfirmPassword from "./components/Student/ConfirmPassword"
 import ResetPassword from "./components/Student/ResetPassword"
+import ProtectedRoute from "./components/Student/protectedroute"
 
 function App() {
   return (
     <>
       <Toaster />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<AuthRedirect />} />
-          <Route path="/student/login" element={<Login />} />
-          <Route path="/student/signup" element={<Signup />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/student/forgot-password" element={<ForgotPassword />} />
+      <Switch>
+        <Switch>
+          <ProtectedRoute exact path="/" component={AuthRedirect} />
+          <Route path="/student/login" component={Login} />
+          <Route path="/student/signup" component={Signup} />
+          <Route path="/student/forgot-password" component={ForgotPassword} />
           <Route
             path="/student/confirm-reset-password"
-            element={<ConfirmPassword />}
+            component={ConfirmPassword}
           />
-          <Route path="/student/reset-password" element={<ResetPassword />} />
-          <Route path="/exams" element={<Exams />} />
-          <Route path="*" element={<h1>404 Not Found</h1>} />
-        </Routes>
-      </BrowserRouter>
+          <Route path="/student/reset-password" component={ResetPassword} />
+          <ProtectedRoute path="/dashboard" component={Dashboard} />
+          <ProtectedRoute path="/exams" component={Exams} />
+          <Route path="*" component={() => <h1>404 Not Found</h1>} />
+        </Switch>
+      </Switch>
     </>
   )
 }

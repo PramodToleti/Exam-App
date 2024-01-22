@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form"
-import { useNavigate } from "react-router-dom"
+import { useHistory } from "react-router-dom"
 import { toast } from "react-hot-toast"
 
 const ResetPassword = () => {
@@ -9,7 +9,7 @@ const ResetPassword = () => {
     watch,
     formState: { errors },
   } = useForm()
-  const navigate = useNavigate()
+  const history = useHistory()
 
   const onSubmit = async (data) => {
     const { password, confirm_password } = data
@@ -45,7 +45,7 @@ const ResetPassword = () => {
 
       if (response.ok) {
         toast.success("Password reset successful")
-        navigate("/student/login")
+        history.replace("/student/login")
       } else {
         const result = await response.json()
         console.log(result)

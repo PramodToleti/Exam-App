@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useHistory } from "react-router-dom"
 import { toast } from "react-hot-toast"
 
 const ForgotPassword = () => {
@@ -10,7 +10,7 @@ const ForgotPassword = () => {
     formState: { errors },
   } = useForm()
   const [loading, setLoading] = useState(false)
-  const navigate = useNavigate()
+  const history = useHistory()
 
   const onSubmit = async (data) => {
     setLoading(true)
@@ -37,8 +37,9 @@ const ForgotPassword = () => {
       if (response.ok) {
         toast.success("Verification code sent successfully")
         setLoading(false)
-        // Redirect to /confirm-reset-password
-        navigate("/student/confirm-reset-password", {
+        // Redirect to/student/confirm-reset-password and set email in state
+        history.push({
+          pathname: "/student/confirm-reset-password",
           state: { email: data.email },
         })
       } else {

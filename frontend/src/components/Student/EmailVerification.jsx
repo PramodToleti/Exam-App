@@ -1,24 +1,27 @@
-import { useState } from "react"
-import { useForm } from "react-hook-form"
-import { Link, useHistory } from "react-router-dom"
-import { toast } from "react-hot-toast"
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
+import { toast } from "react-hot-toast";
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
-const ForgotPassword = () => {
+const EmailVerification = ({ title, footer, link }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm()
-  const [loading, setLoading] = useState(false)
-  const history = useHistory()
-
+  } = useForm();
+  const [loading, setLoading] = useState(false);
+  const history = useHistory();
   const onSubmit = async (data) => {
-    setLoading(true)
+    setLoading(true);
 
     try {
       const payload = {
         email: data.email,
-      }
+      };
+
+      console.log(data.email);
 
       const options = {
         method: "POST",
@@ -27,41 +30,40 @@ const ForgotPassword = () => {
         },
         body: JSON.stringify(payload),
         credentials: "include",
-      }
+      };
 
       const response = await fetch(
         "http://localhost:9001/api/student/forgot-password",
         options
-      )
+      );
 
       if (response.ok) {
-        toast.success("Verification code sent successfully")
-        setLoading(false)
+        toast.success("Verification code sent successfully");
+        setLoading(false);
         // Redirect to/student/confirm-reset-password and set email in state
         history.push({
-          pathname: "/student/confirm-reset-password",
+          pathname: "/student/otp-verification",
           state: { email: data.email },
-        })
+        });
       } else {
-        const result = await response.json()
-        console.log(result)
-        toast.error(result.msg)
-        setLoading(false)
+        const result = await response.json();
+        console.log(result);
+        toast.error(result.msg);
+        setLoading(false);
       }
     } catch (error) {
-      console.log(error)
-      toast.error("Something went wrong")
-      setLoading(false)
+      console.log(error);
+      toast.error("Something went wrong");
+      setLoading(false);
     }
-  }
-
+  };
   return (
     <section className="bg-slate-100 dark:bg-gray-900 md:py-10 min-h-screen">
       <div className="h-screen flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
         <div className="w-full bg-white rounded-lg shadow-lg dark:border md:mt-0 sm:max-w-lg xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Forgot Password
+              {title}
             </h1>
             <p className="text-sm text-center font-light text-gray-500 dark:text-gray-400">
               We will send you a verification code to your email address.
@@ -118,21 +120,29 @@ const ForgotPassword = () => {
                   "Send Verification Code"
                 )}
               </button>
-              <p className="text-sm text-center font-light text-gray-500 dark:text-gray-400">
-                {"Remember your password? "}
+            </form>
+            <p className="text-sm text-center font-light text-gray-500 dark:text-gray-400">
+              {footer}
+              {link && (
                 <Link
-                  to="/student/login"
+                  to={link}
                   className="font-medium text-blue-600 hover:underline dark:text-blue-500"
                 >
                   Log in here
                 </Link>
-              </p>
-            </form>
+              )}
+            </p>
           </div>
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default ForgotPassword
+EmailVerification.propTypes = {
+  title: PropTypes.string.isRequired,
+  footer: PropTypes.string.isRequired,
+  link: PropTypes.string.isRequired,
+};
+
+export default EmailVerification;

@@ -1,22 +1,22 @@
-import React, { useEffect, useRef, useState } from "react"
-import { useForm } from "react-hook-form"
-import { useLocation, useHistory } from "react-router-dom"
-import { toast } from "react-hot-toast"
+import React, { useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useLocation, useHistory } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
-const ConfirmPassword = () => {
+const OtpVerification = () => {
   const {
     handleSubmit,
     formState: { errors },
-  } = useForm()
-  const [loading, setLoading] = useState(false)
-  const location = useLocation()
-  const email = location.state.email
+  } = useForm();
+  const [loading, setLoading] = useState(false);
+  const location = useLocation();
+  const email = location.state.email;
   const inputRefs = useRef(
     Array(6)
       .fill(null)
       .map(() => React.createRef())
-  )
-  const history = useHistory()
+  );
+  const history = useHistory();
   const [verificationCode, setVerificationCode] = useState([
     "",
     "",
@@ -24,38 +24,38 @@ const ConfirmPassword = () => {
     "",
     "",
     "",
-  ])
+  ]);
 
   useEffect(() => {
     if (inputRefs.current[0]?.current) {
-      inputRefs.current[0].current.focus()
+      inputRefs.current[0].current.focus();
     }
-  }, [])
+  }, []);
 
   const handleInputChange = (e, index) => {
-    const value = e.target.value
-    console.log(value)
+    const value = e.target.value;
+    console.log(value);
 
-    const updatedVerificationCode = [...verificationCode]
-    updatedVerificationCode[index] = value
-    setVerificationCode(updatedVerificationCode)
+    const updatedVerificationCode = [...verificationCode];
+    updatedVerificationCode[index] = value;
+    setVerificationCode(updatedVerificationCode);
 
     if (value !== "" && index < inputRefs.current.length - 1) {
-      inputRefs.current[index + 1]?.current?.focus()
+      inputRefs.current[index + 1]?.current?.focus();
     }
 
     if (value === "" && index > 0) {
-      inputRefs.current[index - 1]?.current?.focus()
+      inputRefs.current[index - 1]?.current?.focus();
     }
-  }
+  };
 
   const onSubmit = async () => {
-    setLoading(true)
+    setLoading(true);
 
     try {
       const payload = {
         verificationCode: verificationCode.join(""),
-      }
+      };
 
       const options = {
         method: "POST",
@@ -64,37 +64,37 @@ const ConfirmPassword = () => {
         },
         body: JSON.stringify(payload),
         credentials: "include",
-      }
+      };
 
       const response = await fetch(
         "http://localhost:9001/api/student/confirm-reset-password",
         options
-      )
+      );
 
       if (response.ok) {
-        toast.success("Verification successful")
-        setLoading(false)
-        history.replace("/student/reset-password")
+        toast.success("Verification successful");
+        setLoading(false);
+        history.replace("/student/reset-password");
       } else {
-        const result = await response.json()
-        console.log(result)
-        toast.error(result.msg)
-        setLoading(false)
+        const result = await response.json();
+        console.log(result);
+        toast.error(result.msg);
+        setLoading(false);
       }
     } catch (error) {
-      console.log(error)
-      toast.error("Something went wrong")
-      setLoading(false)
+      console.log(error);
+      toast.error("Something went wrong");
+      setLoading(false);
     }
-  }
+  };
 
   const resendVerificationCode = async (email) => {
-    setLoading(true)
+    setLoading(true);
 
     try {
       const payload = {
         email: email,
-      }
+      };
 
       const options = {
         method: "POST",
@@ -103,28 +103,28 @@ const ConfirmPassword = () => {
         },
         body: JSON.stringify(payload),
         credentials: "include",
-      }
+      };
 
       const response = await fetch(
         "http://localhost:9001/api/student/forgot-password",
         options
-      )
+      );
 
       if (response.ok) {
-        toast.success("Verification code sent successfully")
-        setLoading(false)
+        toast.success("Verification code sent successfully");
+        setLoading(false);
       } else {
-        const result = await response.json()
-        console.log(result)
-        toast.error(result.msg)
-        setLoading(false)
+        const result = await response.json();
+        console.log(result);
+        toast.error(result.msg);
+        setLoading(false);
       }
     } catch (error) {
-      console.log(error)
-      toast.error("Something went wrong")
-      setLoading(false)
+      console.log(error);
+      toast.error("Something went wrong");
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <section className="bg-slate-100 dark:bg-gray-900 md:py-10 min-h-screen">
@@ -158,11 +158,11 @@ const ConfirmPassword = () => {
                     ref={inputRefs.current[index - 1]}
                     onKeyDown={(e) => {
                       if (e.key === "ArrowLeft") {
-                        inputRefs.current[index - 2]?.current?.focus()
+                        inputRefs.current[index - 2]?.current?.focus();
                       }
 
                       if (e.key === "ArrowRight") {
-                        inputRefs.current[index]?.current?.focus()
+                        inputRefs.current[index]?.current?.focus();
                       }
                     }}
                   />
@@ -207,7 +207,7 @@ const ConfirmPassword = () => {
                   type="button"
                   className="font-medium text-blue-600 hover:underline dark:text-blue-500"
                   onClick={() => {
-                    resendVerificationCode(email)
+                    resendVerificationCode(email);
                   }}
                 >
                   Resend
@@ -218,7 +218,7 @@ const ConfirmPassword = () => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default ConfirmPassword
+export default OtpVerification;

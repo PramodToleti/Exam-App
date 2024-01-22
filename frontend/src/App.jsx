@@ -1,14 +1,14 @@
-import { Route, Switch } from "react-router-dom"
-import { Toaster } from "react-hot-toast"
-import Dashboard from "./components/Student/Dashboard"
-import Login from "./components/Student/Login"
-import Signup from "./components/Student/Signup"
-import AuthRedirect from "./components/Student/AuthRedirect"
-import Exams from "./components/Student/Exams"
-import ForgotPassword from "./components/Student/ForgotPassword"
-import ConfirmPassword from "./components/Student/ConfirmPassword"
-import ResetPassword from "./components/Student/ResetPassword"
-import ProtectedRoute from "./components/Student/protectedroute"
+import { Route, Switch } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+import Dashboard from "./components/Student/Dashboard";
+import Login from "./components/Student/Login";
+import Signup from "./components/Student/Signup";
+import AuthRedirect from "./components/Student/AuthRedirect";
+import Exams from "./components/Student/Exams";
+import OtpVerification from "./components/Student/OtpVerification";
+import ResetPassword from "./components/Student/ResetPassword";
+import ProtectedRoute from "./components/Student/protectedroute";
+import EmailVerification from "./components/Student/EmailVerification";
 
 function App() {
   return (
@@ -19,10 +19,28 @@ function App() {
           <ProtectedRoute exact path="/" component={AuthRedirect} />
           <Route path="/student/login" component={Login} />
           <Route path="/student/signup" component={Signup} />
-          <Route path="/student/forgot-password" component={ForgotPassword} />
           <Route
-            path="/student/confirm-reset-password"
-            component={ConfirmPassword}
+            path="/student/forgot-password"
+            render={(props) => (
+              <EmailVerification
+                {...props}
+                title="Forgot-password"
+                footer="Remember your password? "
+                link="/student/login"
+              />
+            )}
+          />
+          <Route path="/student/otp-verification" component={OtpVerification} />
+          <Route
+            path="/student/email-verification"
+            render={(props) => (
+              <EmailVerification
+                {...props}
+                title="Email Verification"
+                footer=""
+                link=""
+              />
+            )}
           />
           <Route path="/student/reset-password" component={ResetPassword} />
           <ProtectedRoute path="/dashboard" component={Dashboard} />
@@ -31,7 +49,7 @@ function App() {
         </Switch>
       </Switch>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

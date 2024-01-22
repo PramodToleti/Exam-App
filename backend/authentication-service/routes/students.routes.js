@@ -162,7 +162,7 @@ router.route("/forgot-password").post(async (req, res) => {
       })
       .catch(function (error) {
         console.error(error)
-        res.status(500).json({ message: "Something went wrong" })
+        res.status(500).json({ msg: "Something went wrong" })
       })
   } catch (error) {
     console.log(error)

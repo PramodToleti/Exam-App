@@ -29,16 +29,16 @@ const Dashboard = () => {
   }
 
   return (
-    <div>
+    <nav className="flex justify-between items-center px-12 py-2  shadow-md">
       <h1>Dashboard</h1>
       <button
         type="button"
-        className="bg-blue-600 text-white text-md p-2 border rounded-md outline-none h-12 w-28"
+        className="bg-blue-600 text-white text-md p-1 border rounded-md outline-none h-10 w-20"
         onClick={handleLogout}
       >
         Logout
       </button>
-    </div>
+    </nav>
   )
 }
 

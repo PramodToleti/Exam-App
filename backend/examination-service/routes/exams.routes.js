@@ -5,7 +5,7 @@ const authenticate = require("../../shared/middleware/authenticate");
 
 router.route("/all").get(async (req, res) => {
   try {
-    const exams = await Exam.find();
+    const exams = await Exam.find().select("-questions");
     if (!exams.length) {
       return res.status(400).json({
         msg: "No Exam found.",

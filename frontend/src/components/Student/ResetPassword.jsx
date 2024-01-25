@@ -1,6 +1,8 @@
 import { useForm } from "react-hook-form"
 import { useHistory } from "react-router-dom"
 import { toast } from "react-hot-toast"
+import { useEffect } from "react"
+import { checkToken } from "../../utils/checkToken"
 
 const ResetPassword = () => {
   const {
@@ -10,6 +12,17 @@ const ResetPassword = () => {
     formState: { errors },
   } = useForm()
   const history = useHistory()
+
+  useEffect(() => {
+    const checkUserLogin = async () => {
+      const isAuthenticated = await checkToken()
+      if (isAuthenticated) {
+        history.replace("/dashboard")
+      }
+    }
+
+    checkUserLogin()
+  }, [history])
 
   const onSubmit = async (data) => {
     const { password, confirm_password } = data

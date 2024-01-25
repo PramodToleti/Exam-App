@@ -1,43 +1,40 @@
-import { useForm } from "react-hook-form";
-import { Link, useHistory } from "react-router-dom";
-import { toast } from "react-hot-toast";
-import { useEffect, useState } from "react";
-import { checkToken } from "../../utils/checkToken";
+import { useForm } from "react-hook-form"
+import { Link, useHistory } from "react-router-dom"
+import { toast } from "react-hot-toast"
+import { useEffect, useState } from "react"
+import { checkToken } from "../../utils/checkToken"
 
 const Signup = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
-  const [loading, setloading] = useState(false);
-  const history = useHistory();
+  } = useForm()
+  const [loading, setloading] = useState(false)
+  const history = useHistory()
 
   useEffect(() => {
     const checkUserLogin = async () => {
-      const isAuthenticated = await checkToken();
+      const isAuthenticated = await checkToken()
       if (isAuthenticated) {
-        history.replace("/dashboard");
+        history.replace("/dashboard")
       }
-    };
+    }
 
-    checkUserLogin();
-  }, [history]);
+    checkUserLogin()
+  }, [history])
 
   const onSubmit = async (data) => {
     if (data.password !== data.confirmPassword) {
-      toast.error("Passwords do not match");
-      return;
+      toast.error("Passwords do not match")
+      return
     }
 
-    setloading(true);
+    setloading(true)
 
-    //Email validation
-    history.push("/student/email-verification");
+    const { confirmPassword, ...rest } = data
 
-    const { confirmPassword, ...rest } = data;
-
-    console.log(confirmPassword, rest);
+    console.log(confirmPassword, rest)
 
     try {
       const options = {
@@ -47,29 +44,31 @@ const Signup = () => {
         },
         body: JSON.stringify(rest),
         credentials: "include",
-      };
+      }
 
       const response = await fetch(
         "http://localhost:9001/api/student/signup",
         options
-      );
+      )
 
       if (response.ok) {
-        setloading(false);
-        toast.success("Account created successfully");
-        return history.push("/student/login");
+        setloading(false)
+        return history.push({
+          pathname: "/student/email-verification",
+          state: { email: rest.email , from: "signup"},
+        })
       } else {
-        const result = await response.json();
-        console.log(result);
-        toast.error(result.msg);
-        setloading(false);
+        const result = await response.json()
+        console.log(result)
+        toast.error(result.msg)
+        setloading(false)
       }
     } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong");
-      setloading(false);
+      console.log(error)
+      toast.error("Something went wrong")
+      setloading(false)
     }
-  };
+  }
 
   return (
     <section className=" bg-slate-100 dark:bg-gray-900 md:py-10 min-h-screen">
@@ -268,7 +267,7 @@ const Signup = () => {
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Signup;
+export default Signup

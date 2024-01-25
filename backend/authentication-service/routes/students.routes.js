@@ -62,6 +62,10 @@ router.route("/login").post(async (req, res) => {
       $or: [{ email: identifier }, { username: identifier }],
     })
 
+    if (!student.active) {
+      return res.status(400).json({ msg: "Account not activated." })
+    }
+
     if (!student) {
       return res.status(400).json({
         msg: "No account with this email or username has been registered.",
@@ -87,7 +91,15 @@ router.route("/login").post(async (req, res) => {
       .cookie("token", token, cookieParams, cookieParams, {
         expires: new Date(Date.now() + 25892000000),
       })
-      .send({ msg: "Login successful!" })
+      .send({
+        msg: "Login successful!",
+        user: {
+          id: student.id,
+          username: student.username,
+          email: student.email,
+          institute: student.institute,
+        },
+      })
   } catch (error) {
     console.log(error)
     res.status(500).json({ msg: "Something went wrong." })
@@ -105,7 +117,7 @@ router.route("/logout").get((_, res) => {
   }
 })
 
-router.route("/forgot-password").post(async (req, res) => {
+router.route("/email-verification").post(async (req, res) => {
   try {
     const { email } = req.body
 
@@ -170,14 +182,13 @@ router.route("/forgot-password").post(async (req, res) => {
   }
 })
 
-router.route("/confirm-reset-password").post(async (req, res) => {
+router.route("/otp-verification").post(async (req, res) => {
   try {
     const { verificationCode } = req.body
 
     const student = await Student.findOne({
       verificationCode: verificationCode,
     })
-
 
     if (!student) {
       return res.status(400).json({ msg: "Invalid verification code." })
@@ -329,6 +340,31 @@ router.route("/update-profile").post(authenticate, async (req, res) => {
     await student.save()
 
     res.status(200).json({ msg: "Profile updated successfully." })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ msg: "Something went wrong." })
+  }
+})
+
+router.route("/activate-account").post(async (req, res) => {
+  try {
+    const { email } = req.body
+
+    const student = await Student.findOne({ email: email })
+
+    if (!student) {
+      return res.status(400).json({ msg: "Student not found." })
+    }
+
+    if (student.active) {
+      return res.status(400).json({ msg: "Account already activated." })
+    }
+
+    student.active = true
+
+    await student.save()
+
+    res.status(200).json({ msg: "Account activated successfully." })
   } catch (error) {
     console.log(error)
     res.status(500).json({ msg: "Something went wrong." })

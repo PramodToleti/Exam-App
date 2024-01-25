@@ -1,27 +1,41 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
-import { toast } from "react-hot-toast";
-import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
+import { useEffect, useState } from "react"
+import { useForm } from "react-hook-form"
+import { useHistory, useLocation } from "react-router-dom"
+import { toast } from "react-hot-toast"
+import { Link } from "react-router-dom"
+import PropTypes from "prop-types"
+import { checkToken } from "../../utils/checkToken"
 
 const EmailVerification = ({ title, footer, link }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
-  const [loading, setLoading] = useState(false);
-  const history = useHistory();
+  } = useForm()
+  const [loading, setLoading] = useState(false)
+  const history = useHistory()
+  const location = useLocation()
+
+  useEffect(() => {
+    const checkUserLogin = async () => {
+      const isAuthenticated = await checkToken()
+      if (isAuthenticated) {
+        history.replace("/dashboard")
+      }
+    }
+
+    checkUserLogin()
+  }, [history])
+
   const onSubmit = async (data) => {
-    setLoading(true);
+    setLoading(true)
 
     try {
       const payload = {
         email: data.email,
-      };
+      }
 
-      console.log(data.email);
+      console.log(data.email)
 
       const options = {
         method: "POST",
@@ -30,33 +44,33 @@ const EmailVerification = ({ title, footer, link }) => {
         },
         body: JSON.stringify(payload),
         credentials: "include",
-      };
+      }
 
       const response = await fetch(
-        "http://localhost:9001/api/student/forgot-password",
+        "http://localhost:9001/api/student/email-verification",
         options
-      );
+      )
 
       if (response.ok) {
-        toast.success("Verification code sent successfully");
-        setLoading(false);
+        toast.success("Verification code sent successfully")
+        setLoading(false)
         // Redirect to/student/confirm-reset-password and set email in state
         history.push({
           pathname: "/student/otp-verification",
-          state: { email: data.email },
-        });
+          state: { email: data.email, from: location.state?.from },
+        })
       } else {
-        const result = await response.json();
-        console.log(result);
-        toast.error(result.msg);
-        setLoading(false);
+        const result = await response.json()
+        console.log(result)
+        toast.error(result.msg)
+        setLoading(false)
       }
     } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong");
-      setLoading(false);
+      console.log(error)
+      toast.error("Something went wrong")
+      setLoading(false)
     }
-  };
+  }
   return (
     <section className="bg-slate-100 dark:bg-gray-900 md:py-10 min-h-screen">
       <div className="h-screen flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
@@ -82,6 +96,7 @@ const EmailVerification = ({ title, footer, link }) => {
                 <input
                   type="email"
                   id="email"
+                  defaultValue={location.state?.email}
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-2"
                   placeholder="Enter your email"
                   {...register("email", { required: true })}
@@ -136,13 +151,13 @@ const EmailVerification = ({ title, footer, link }) => {
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
 EmailVerification.propTypes = {
   title: PropTypes.string.isRequired,
   footer: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
-};
+}
 
-export default EmailVerification;
+export default EmailVerification

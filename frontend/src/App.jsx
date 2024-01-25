@@ -1,14 +1,16 @@
-import { Route, Switch } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
-import Dashboard from "./components/Student/Dashboard";
-import Login from "./components/Student/Login";
-import Signup from "./components/Student/Signup";
-import AuthRedirect from "./components/Student/AuthRedirect";
-import Exams from "./components/Student/Exams";
-import OtpVerification from "./components/Student/OtpVerification";
-import ResetPassword from "./components/Student/ResetPassword";
-import ProtectedRoute from "./components/Student/protectedroute";
-import EmailVerification from "./components/Student/EmailVerification";
+import { Route, Switch } from "react-router-dom"
+import { Toaster } from "react-hot-toast"
+import Dashboard from "./components/Student/Dashboard"
+import Login from "./components/Student/Login"
+import Signup from "./components/Student/Signup"
+import AuthRedirect from "./components/Student/AuthRedirect"
+import Exams from "./components/Student/Exams"
+import OtpVerification from "./components/Student/OtpVerification"
+import ResetPassword from "./components/Student/ResetPassword"
+import ProtectedRoute from "./components/Student/protectedroute"
+import EmailVerification from "./components/Student/EmailVerification"
+import Results from "./components/Student/Results"
+import Profile from "./components/Student/Profile"
 
 function App() {
   return (
@@ -44,12 +46,14 @@ function App() {
           />
           <Route path="/student/reset-password" component={ResetPassword} />
           <ProtectedRoute path="/dashboard" component={Dashboard} />
+          <ProtectedRoute path="/profile" component={Profile} />
           <ProtectedRoute path="/exams" component={Exams} />
+          <ProtectedRoute path="/results" component={Results} />
           <Route path="*" component={() => <h1>404 Not Found</h1>} />
         </Switch>
       </Switch>
     </>
-  );
+  )
 }
 
-export default App;
+export default App

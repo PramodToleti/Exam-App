@@ -1,44 +1,19 @@
-import toast from "react-hot-toast"
-import { useHistory } from "react-router-dom"
+import Navbar from "./Navbar"
 
 const Dashboard = () => {
-  const history = useHistory()
-  const handleLogout = async () => {
-    try {
-      const options = {
-        method: "GET",
-        credentials: "include",
-      }
-
-      const response = await fetch(
-        "http://localhost:9001/api/student/logout",
-        options
-      )
-
-      if (response.ok) {
-        toast.success("Logged out successfully")
-        history.replace("/student/login")
-      } else {
-        toast.error("Something went wrong")
-        const result = await response.json()
-        console.log(result)
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
+  const user = JSON.parse(localStorage.getItem("user"))
   return (
-    <nav className="flex justify-between items-center px-12 py-2  shadow-md">
-      <h1>Dashboard</h1>
-      <button
-        type="button"
-        className="bg-blue-600 text-white text-md p-1 border rounded-md outline-none h-10 w-20"
-        onClick={handleLogout}
-      >
-        Logout
-      </button>
-    </nav>
+    <section className="bg-slate-100 dark:bg-gray-900 py-4 md:py-10 min-h-screen">
+      <div className="container mx-auto px-4">
+        <Navbar />
+
+        <h1 className="text-2xl font-medium text-gray-800 dark:text-white md:text-3xl mt-10">
+          Welcome back, {user?.username ?? "User"} 👋
+        </h1>
+
+        
+      </div>
+    </section>
   )
 }
 

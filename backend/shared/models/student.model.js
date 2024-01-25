@@ -31,6 +31,10 @@ const studentSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
+    active: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

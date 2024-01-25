@@ -49,12 +49,14 @@ const Login = () => {
         options
       )
 
+      const result = await response.json()
+
       if (response.ok) {
         setloading(false)
         toast.success("Login successful")
+        localStorage.setItem("user", JSON.stringify(result.user))
         history.replace("/dashboard")
       } else {
-        const result = await response.json()
         console.log(result)
         toast.error(result.msg)
         setloading(false)
@@ -91,7 +93,7 @@ const Login = () => {
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-2"
                   placeholder="Enter your email or username"
                   {...register("email", { required: true })}
-                  defaultValue={"pramodraina047@gmail.com"}
+                  defaultValue={""}
                 />
                 {errors.email && (
                   <span className="text-red-500 text-sm">
@@ -114,7 +116,7 @@ const Login = () => {
                   {...register("password", {
                     required: true,
                   })}
-                  defaultValue={"pramod"}
+                  defaultValue={""}
                 />
               </div>
               {errors.password && (
@@ -165,6 +167,23 @@ const Login = () => {
                   className="font-medium text-blue-600 hover:underline dark:text-blue-500"
                 >
                   Sign up here
+                </Link>
+              </p>
+              <p
+                className="text-sm text-center font-light text-gray-500 dark:text-gray-400"
+                style={{ marginTop: "5px" }}
+              >
+                {"Account not activated? "}
+                <Link
+                  to={{
+                    pathname: "/student/email-verification",
+                    state: {
+                      from: "signup",
+                    },
+                  }}
+                  className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+                >
+                  Activate Here
                 </Link>
               </p>
             </form>

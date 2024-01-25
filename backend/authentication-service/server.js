@@ -43,5 +43,5 @@ ConnectToDatabase();
 const PORT = process.env.AUTHENTICATION_PORT || 9001;
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Authentication Serice is running on port ${PORT}`);
 });

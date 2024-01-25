@@ -65,7 +65,7 @@ const Navbar = () => {
   return (
     <div className="mx-auto flex justify-between items-center text-gray-800 dark:text-slate-100">
       <div className="flex justify-between items-center w-full ">
-        <h1 className="text-2xl px-2 dark:text-gray-800">SITE</h1>
+        <h1 className="text-2xl px-2">SITE</h1>
         <div onClick={() => setNav(!nav)} className="cursor-pointer">
           <AiOutlineMenu size={30} />
         </div>
@@ -74,17 +74,17 @@ const Navbar = () => {
       <div
         className={
           nav
-            ? "fixed top-0 right-0 w-[280px] h-screen bg-white text-gray-800 z-10 duration-300"
+            ? "fixed top-0 right-0 w-[280px] h-screen bg-slate-400 text-white  dark:bg-gray-700 dark:text-white z-10 duration-300"
             : "fixed top-0 right-[-100%] w-[280px] h-screen bg-white text-gray-800  z-10 duration-300"
         }
       >
         <AiOutlineClose
           onClick={() => setNav(!nav)}
           size={30}
-          className="absolute text-gray-800 right-4 top-4 cursor-pointer"
+          className="absolute right-4 top-4 cursor-pointer"
         />
-        <nav className="flex flex-col justify-between h-[90%] mx-4 my-4">
-          <ul className="flex flex-col p-4 gap-5 mt-10 text-gray-800">
+        <nav className="flex flex-col justify-between h-[90%] mx-4 my-4 ">
+          <ul className="flex flex-col p-4 gap-5 mt-10 mr-16">
             {menuItems.map(({ icon, text, link }, index) => {
               return (
                 <Link

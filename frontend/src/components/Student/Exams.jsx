@@ -1,9 +1,20 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Navbar from "./Navbar"
 
 const Exams = () => {
-  const [examsCnt, setexamsCnt] = useState(Array.from({ length: 4 }))
-  console.log(setexamsCnt)
+  const [exams, setexams] = useState([])
+
+  useEffect(() => {
+    const fetchExams = async () => {
+      const response = await fetch("http://localhost:9002/api/exams/all")
+      const result = await response.json()
+      setexams(result.exams)
+    }
+
+    fetchExams()
+  }, [])
+
+  console.log(exams)
 
   return (
     <section className="bg-slate-100 dark:bg-gray-900 py-4 md:py-10 min-h-screen">
@@ -11,7 +22,7 @@ const Exams = () => {
         <Navbar />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6 md:mt-10">
-          {examsCnt.map((exam, index) => (
+          {exams?.map((exam, index) => (
             <div
               className="max-w-sm min-h-56 p-6 flex flex-col  items-start justify-between bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 my-3"
               key={index}
@@ -19,14 +30,14 @@ const Exams = () => {
               <div>
                 <a href="#">
                   <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                    Exam Title
+                    {exam.title}
                   </h5>
                 </a>
                 <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                  Here are the description for the project
+                 {exam.description}
                 </p>
                 <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                  Duration: <span className="font-bold">20 min</span>
+                  Duration: <span className="font-bold">{exam.duration} min</span>
                 </p>
               </div>
               <a

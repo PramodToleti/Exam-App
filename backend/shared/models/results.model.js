@@ -17,6 +17,11 @@ const resultSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    topic: {
+      type: Number,
+      required: true,
+      trim: true,
+    },
     submissionTime: {
       type: Date,
       default: Date.now,

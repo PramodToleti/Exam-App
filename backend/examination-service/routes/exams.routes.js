@@ -98,6 +98,7 @@ router.route("/submit").post(async (req, res) => {
     const currentTime = Date.now();
     const { studentId, examId, questions } = req.body;
     let answers = await Exam.findById({ _id: examId });
+    const topic = answers.topic;
     if (!answers) {
       return res.status(401).send("No Exam found");
     }
@@ -111,6 +112,7 @@ router.route("/submit").post(async (req, res) => {
     const savedResult = await Result.create({
       studentId: studentId,
       examId: examId,
+      topic: topic,
       marks: marks,
       submissionTime: currentTime,
     });

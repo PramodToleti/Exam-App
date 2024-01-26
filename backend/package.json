@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:auth": "cd authentication-service && npm run dev",
     "start:exam": "cd examination-service && npm run dev",
-    "start:all": "concurrently \"npm run start:auth\" \"npm run start:exam\""
+    "start:results": "cd results-service && npm run dev",
+    "start:all": "concurrently \"npm run start:auth\" \"npm run start:exam\" \"npm run start:results\""
   },
   "keywords": [],
   "author": "",

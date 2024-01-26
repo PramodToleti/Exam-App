@@ -8,7 +8,8 @@
     "start:auth": "cd authentication-service && npm run dev",
     "start:exam": "cd examination-service && npm run dev",
     "start:results": "cd results-service && npm run dev",
-    "start:all": "concurrently \"npm run start:auth\" \"npm run start:exam\" \"npm run start:results\""
+    "start:institutes": "cd institutes-service && npm run dev",
+    "start:all": "concurrently \"npm run start:auth\" \"npm run start:exam\" \"npm run start:results\" \"npm run start:institutes\""
   },
   "keywords": [],
   "author": "",

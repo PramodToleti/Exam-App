@@ -18,7 +18,7 @@ const resultSchema = new mongoose.Schema(
       trim: true,
     },
     topic: {
-      type: Number,
+      type: String,
       required: true,
       trim: true,
     },

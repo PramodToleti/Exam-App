@@ -56,7 +56,7 @@ router.route("/:studentId/:topic/all").get(async (req, res) => {
 
 router.route("/all").get(async (req, res) => {
   try {
-    const results = await Results.find();
+    const results = await Results.find({});
 
     if (!results || results.length === 0) {
       return res.status(404).json({ message: "No records found." });
@@ -72,7 +72,7 @@ router.route("/all").get(async (req, res) => {
 router.route("/:topic").get(async (req, res) => {
   try {
     const { topic } = req.params;
-    const results = await Results.find({ topic });
+    const results = await Results.find({ topic: topic });
 
     if (!results || results.length === 0) {
       return res.status(404).json({ message: "No records found." });

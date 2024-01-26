@@ -18,6 +18,24 @@ router.route("/all").get(async (req, res) => {
     res.status(500).json({ msg: "Something went wrong." });
   }
 });
+router.route("/:id").get(async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!require("mongoose").Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid ID format." });
+    }
+    const exam = await Exam.find({ _id: id });
+    if (!exam) {
+      return res.status(400).json({
+        msg: "No Exam found.",
+      });
+    }
+    res.status(200).json(exam);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ msg: "Something went wrong." });
+  }
+});
 
 router.route("/create").post(async (req, res) => {
   try {
@@ -55,6 +73,9 @@ router.route("/delete/all").delete(async (req, res) => {
 router.route("/delete/:examId").delete(async (req, res) => {
   try {
     const { examId } = req.params;
+    if (!require("mongoose").Types.ObjectId.isValid(examId)) {
+      return res.status(400).json({ message: "Invalid ID format." });
+    }
     const exam = await Exam.findById({ _id: examId });
     if (!exam) {
       return res.status(400).json({

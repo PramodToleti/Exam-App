@@ -11,6 +11,7 @@ import ProtectedRoute from "./components/Student/protectedroute"
 import EmailVerification from "./components/Student/EmailVerification"
 import Results from "./components/Student/Results"
 import Profile from "./components/Student/Profile"
+import ExamPage from "./components/Student/ExamPage"
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
           <ProtectedRoute path="/dashboard" component={Dashboard} />
           <ProtectedRoute path="/profile" component={Profile} />
           <ProtectedRoute path="/exams" component={Exams} />
+          <ProtectedRoute path="/exam/:id" component={ExamPage} />
           <ProtectedRoute path="/results" component={Results} />
           <Route path="*" component={() => <h1>404 Not Found</h1>} />
         </Switch>

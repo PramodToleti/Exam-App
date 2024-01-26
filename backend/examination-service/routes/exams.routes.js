@@ -1,6 +1,7 @@
 const router = require("express").Router();
 
 const Exam = require("../../shared/models/exam.model");
+const Result = require("../../shared/models/results.model");
 const authenticate = require("../../shared/middleware/authenticate");
 
 router.route("/all").get(async (req, res) => {
@@ -83,8 +84,18 @@ router.route("/topic/:topic").get(async (req, res) => {
     res.status(500).json({ msg: "Something went wrong." });
   }
 });
+router.route("/topics/all").get(async (req, res) => {
+  try {
+    const uniqueTopics = await Exam.distinct("topic");
+    res.status(200).json({ topics: uniqueTopics });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ msg: "Something went wrong." });
+  }
+});
 router.route("/submit").post(async (req, res) => {
   try {
+    const currentTime = Date.now();
     const { studentId, examId, questions } = req.body;
     let answers = await Exam.findById({ _id: examId });
     if (!answers) {
@@ -97,6 +108,12 @@ router.route("/submit").post(async (req, res) => {
         marks++;
       }
     }
+    const savedResult = await Result.create({
+      studentId: studentId,
+      examId: examId,
+      marks: marks,
+      submissionTime: currentTime,
+    });
     return res.status(200).json({ marks });
   } catch (err) {
     console.log(err);

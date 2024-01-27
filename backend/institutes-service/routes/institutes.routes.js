@@ -53,9 +53,9 @@ router.route("/all").get(async (req, res) => {
       return res.status(404).json({ message: "No institutes found." });
     }
 
-    const instituteNames = allInstitutes.map((institute) => institute.name);
+    const institutes = allInstitutes.map((institute) => institute.name);
 
-    res.status(200).json({ instituteNames });
+    res.status(200).json({ institutes });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Failed to retrieve institutes." });

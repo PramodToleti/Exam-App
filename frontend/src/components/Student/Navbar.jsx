@@ -7,7 +7,7 @@ import { FaChalkboard } from "react-icons/fa"
 import { FiLogOut } from "react-icons/fi"
 import toast from "react-hot-toast"
 import { useHistory } from "react-router-dom"
-import { Link } from "react-router-dom/cjs/react-router-dom.min"
+import { Link } from "react-router-dom"
 
 const Navbar = () => {
   const [nav, setNav] = useState(false)

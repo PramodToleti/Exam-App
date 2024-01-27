@@ -6,6 +6,7 @@ const options = ["a", "b", "c", "d"]
 
 const ExamPage = () => {
   const { id } = useParams()
+  const studentId = JSON.parse(localStorage.getItem("user")).id
   const [exam, setExam] = useState({})
   const [isExamFetched, setIsExamFetched] = useState(false)
   const [timer, setTimer] = useState(600)
@@ -29,6 +30,7 @@ const ExamPage = () => {
   }
 
   useEffect(() => {
+    console.log("Fetching exam...")
     const fetchExam = async () => {
       try {
         setLoading(true)
@@ -36,15 +38,18 @@ const ExamPage = () => {
         const result = await response.json()
         setLoading(false)
         if (response.ok) {
+          console.log("Exam fetched successfully:", result)
           setExam(result[0])
           setTimer(result[0].duration * 60)
           setIsExamFetched(true)
-          setAnswers([
-            ...result[0].questions.map((question) => ({
-              question: question.question,
-              answer: "",
-            })),
-          ])
+          setAnswers((prevAnswers) =>
+            prevAnswers.length === 0
+              ? result[0].questions.map((question) => ({
+                  question: question.question,
+                  answer: "",
+                }))
+              : prevAnswers
+          )
         }
       } catch (error) {
         console.error("Error fetching exam:", error)
@@ -54,17 +59,21 @@ const ExamPage = () => {
     if (!isExamFetched) {
       fetchExam()
     }
-  }, [id, isExamFetched, exam.questions])
+  }, [id, isExamFetched])
 
-  /*  useEffect(() => {
+  useEffect(() => {
     if (isExamFetched) {
+      console.log("Starting countdown...")
       const countdown = setInterval(() => {
         setTimer((prevTimer) => prevTimer - 1)
       }, 1000)
 
-      return () => clearInterval(countdown)
+      return () => {
+        console.log("Clearing countdown...")
+        clearInterval(countdown)
+      }
     }
-  }, [isExamFetched]) */
+  }, [isExamFetched])
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60)
@@ -90,30 +99,39 @@ const ExamPage = () => {
     e.preventDefault()
 
     const payload = {
-      studentId: JSON.parse(localStorage.getItem("user")).id,
+      studentId,
       examId: exam._id,
       questions: answers,
     }
 
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-      credentials: "include",
-    }
-
-    const response = await fetch(
-      "http://localhost:9002/api/exams/submit",
-      options
-    )
-    const result = await response.json()
-    console.log(result)
-    /*   const userConfirmsSubmit = confirm("Are you sure you want to submit?")
+    const userConfirmsSubmit = confirm("Are you sure you want to submit?")
     if (userConfirmsSubmit) {
-      history.replace("/results", { answers: answers, exam: exam })
-    } */
+      try {
+        const options = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+          credentials: "include",
+        }
+        setLoading(true)
+        const response = await fetch(
+          "http://localhost:9002/api/exams/submit",
+          options
+        )
+        setLoading(false)
+        if (response.ok) {
+          history.replace(`/result/${studentId}/${exam._id}`)
+        }
+        const result = await response.json()
+        console.log(result)
+      } catch (error) {
+        console.log(error)
+      }
+    } else {
+      return false
+    }
   }
 
   return loading ? (
@@ -142,7 +160,7 @@ const ExamPage = () => {
           <header className="bg-gray-500 dark:bg-gray-800 text-white p-4 md:grid grid-cols-3 items-center rounded-md">
             <div className="hidden md:block">
               <h1 className="text-xl font-bold mb-1">{exam.title}</h1>
-              <p className="text-sm">{exam.topic}</p>
+              <p className="text-sm">Topic: {exam.topic}</p>
             </div>
             <div className="text-center">
               <p className="text-sm">Time Remaining</p>
@@ -167,7 +185,7 @@ const ExamPage = () => {
           </header>
           <main className="my-5">
             <div className="flex flex-col items-center md:flex-row md:items-start gap-4">
-              <div className="md:w-5/6">
+              <div className="w-full md:w-5/6">
                 <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 min-h-80 flex flex-col gap-2">
                   <div className="flex justify-between items-center">
                     <h1 className="text-xl font-bold">Question {index}</h1>
@@ -215,7 +233,7 @@ const ExamPage = () => {
                 </div>
               </div>
               <div className="w-1/4 hidden md:block">
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 max-h-96 overflow-y-scroll">
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 max-h-96 overflow-y-scroll no-scrollbar">
                   <div className="flex justify-between items-center">
                     <h1 className="text-xl font-bold">Questions</h1>
                     <p className="text-sm">
@@ -225,20 +243,26 @@ const ExamPage = () => {
                   <div className="mt-4">
                     <ul className="flex flex-col gap-4">
                       {exam.questions &&
-                        exam.questions.map((question, index) => (
+                        exam.questions.map((question, i) => (
                           <li
                             className="flex justify-between items-center"
-                            key={index}
+                            key={i}
                           >
-                            <p>{index + 1}</p>
-                            <p>
-                              {answers[index] !== undefined
-                                ? answers.filter(
-                                    (answer) =>
-                                      answer.question === question.question
-                                  )[0]?.answer !== undefined && "Answered"
-                                : "Unanswered"}
-                            </p>
+                            <button
+                              onClick={() => setIndex(i + 1)}
+                              className="bg-blue-400 rounded-full w-8 h-8"
+                            >
+                              {i + 1}
+                            </button>
+                            {answers[i]?.answer === "" ? (
+                              <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 border-2 border-red-300 text-red-800">
+                                Not Answered
+                              </span>
+                            ) : (
+                              <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 border-2 border-green-300 text-green-800">
+                                Answered
+                              </span>
+                            )}
                           </li>
                         ))}
                     </ul>

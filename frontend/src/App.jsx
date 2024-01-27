@@ -12,6 +12,7 @@ import EmailVerification from "./components/Student/EmailVerification"
 import Results from "./components/Student/Results"
 import Profile from "./components/Student/Profile"
 import ExamPage from "./components/Student/ExamPage"
+import ExamResult from "./components/Student/ExamResult"
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
           <ProtectedRoute path="/exams" component={Exams} />
           <ProtectedRoute path="/exam/:id" component={ExamPage} />
           <ProtectedRoute path="/results" component={Results} />
+          <ProtectedRoute path="/result/:studentId/:examId" component={ExamResult} />
           <Route path="*" component={() => <h1>404 Not Found</h1>} />
         </Switch>
       </Switch>

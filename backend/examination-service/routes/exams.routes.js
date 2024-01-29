@@ -66,8 +66,7 @@ router.route("/:id").get(async (req, res) => {
         options: ques.options,
       })),
     }
-    //end
-    res.status(200).json({ exam: modifiedExam })
+    res.status(200).json([modifiedExam])
   } catch (err) {
     console.log(err)
     res.status(500).json({ msg: "Something went wrong." })

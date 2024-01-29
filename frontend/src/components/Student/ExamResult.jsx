@@ -55,39 +55,31 @@ const ExamResult = () => {
               .reverse()
               .map((result, index) => (
                 <div
-                  className="bg-white dark:bg-slate-800 rounded-lg shadow-md p-4 mb-4 max-w-lg w-full flex flex-col items-center"
+                  className="bg-white text-dark dark:text-white dark:bg-slate-800 rounded-lg shadow-md p-4 mb-4 max-w-lg w-full flex flex-col items-center"
                   key={index}
                 >
-                  <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">
-                    {result.title}
-                  </h1>
-                  <p className=" text-gray-800 dark:text-gray-100 mb-4">
-                    {result.topic}
-                  </p>
+                  <h1 className="text-xl font-medium mb-4">{result.title}</h1>
+                  <p className="mb-4">{result.topic}</p>
                   <div className="flex flex-col md:flex-row justify-between">
                     <div className="flex flex-col">
-                      <h2 className="text-4xl font-bold self-center text-gray-800 dark:text-gray-100 mb-4 h-12 text-center  rounded-full">
+                      <h2 className="text-4xl font-medium self-center mb-6 mt-4 h-12 text-center  rounded-full">
                         {result.noOfCorrectAnswers} / {result.totalMarks}
                       </h2>
                       <div className="flex flex-col md:flex-row justify-between gap-6 mb-4">
                         <div className="flex flex-col gap-3 items-center">
-                          <p className="text-gray-800 dark:text-gray-100 text-lg">
-                            Correct answers
-                          </p>
-                          <p className="text-gray-800 dark:text-gray-100 font-medium text-lg md:text-xl">
+                          <p className=" text-lg">Correct answers</p>
+                          <p className="font-medium text-lg md:text-xl">
                             {result.noOfCorrectAnswers}
                           </p>
                         </div>
                         <div className="flex flex-col gap-3 items-center">
-                          <p className="text-gray-800 dark:text-gray-100 text-lg">
-                            Wrong answers
-                          </p>
-                          <p className="text-gray-800 dark:text-gray-100 font-medium text-lg md:text-xl">
+                          <p className="text-lg">Wrong answers</p>
+                          <p className=" font-medium text-lg md:text-xl">
                             {result.noOfWrongAnswers}
                           </p>
                         </div>
                       </div>
-                      <p className="text-gray-800 dark:text-gray-100 text-center mt-4">
+                      <p className="text-center text-sm mt-4">
                         Submitted at:{" "}
                         {new Date(result.submissionTime).toLocaleString(
                           undefined,

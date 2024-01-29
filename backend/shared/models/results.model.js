@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require("mongoose")
 
 const resultSchema = new mongoose.Schema(
   {
@@ -12,12 +12,27 @@ const resultSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    marks: {
+    totalMarks: {
+      type: Number,
+      required: true,
+      trim: true,
+    },
+    noOfCorrectAnswers: {
+      type: Number,
+      required: true,
+      trim: true,
+    },
+    noOfWrongAnswers: {
       type: Number,
       required: true,
       trim: true,
     },
     topic: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    title: {
       type: String,
       required: true,
       trim: true,
@@ -30,8 +45,8 @@ const resultSchema = new mongoose.Schema(
   {
     timestamps: true,
   }
-);
+)
 
-const Result = mongoose.model("Result", resultSchema);
+const Result = mongoose.model("Result", resultSchema)
 
-module.exports = Result;
+module.exports = Result

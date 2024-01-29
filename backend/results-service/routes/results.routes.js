@@ -23,7 +23,7 @@ router.route("/:studentId/all").get(async (req, res) => {
 router.route("/:studentId/:examId").get(async (req, res) => {
   try {
     const { studentId, examId } = req.params
-    const results = await Results.findOne({ studentId, examId })
+    const results = await Results.find({ studentId, examId })
 
     if (!results || results.length === 0) {
       return res.status(404).json({ message: "No records found." })

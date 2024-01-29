@@ -4,6 +4,27 @@ const Exam = require("../../shared/models/exam.model")
 const Result = require("../../shared/models/results.model")
 const authenticate = require("../../shared/middleware/authenticate")
 
+router.route("/latest").get(async (req, res) => {
+  try {
+    const endDate = new Date()
+    const startDate = new Date(endDate)
+    startDate.setDate(startDate.getDate() - 2)
+
+    const exams = await Exam.find({
+      createdAt: { $gte: startDate, $lt: endDate },
+    }).sort({ createdAt: -1 })
+
+    if (exams.length === 0) {
+      return res.status(404).json({ msg: "No latest exams" })
+    }
+
+    res.status(200).json(exams)
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ msg: "Something went wrong." })
+  }
+})
+
 router.route("/all").get(async (req, res) => {
   try {
     const exams = await Exam.find().select("-questions")
@@ -105,6 +126,7 @@ router.route("/topic/:topic").get(async (req, res) => {
     res.status(500).json({ msg: "Something went wrong." })
   }
 })
+
 router.route("/topics/all").get(async (req, res) => {
   try {
     const uniqueTopics = await Exam.distinct("topic")

@@ -277,6 +277,7 @@ const ExamPage = () => {
                             key={i}
                           >
                             <button
+                              type="button"
                               onClick={() => setIndex(i + 1)}
                               className="bg-blue-400 rounded-full w-8 h-8 text-white dark:text-gray-800"
                             >

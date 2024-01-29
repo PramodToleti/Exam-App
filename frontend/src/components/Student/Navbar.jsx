@@ -63,9 +63,11 @@ const Navbar = () => {
   }
 
   return (
-    <div className="mx-auto flex justify-between items-center text-gray-800 dark:text-slate-100">
+    <div className="mx-auto flex justify-between items-center text-gray-800 dark:text-slate-100 mb-8">
       <div className="flex justify-between items-center w-full ">
+        <Link to="/dashboard">
         <h1 className="text-2xl px-2">SITE</h1>
+        </Link>
         <div onClick={() => setNav(!nav)} className="cursor-pointer">
           <AiOutlineMenu size={30} />
         </div>

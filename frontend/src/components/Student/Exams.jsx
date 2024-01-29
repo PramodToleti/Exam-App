@@ -36,7 +36,16 @@ const Exams = () => {
             <div className="flex gap-4 mt-4">
               <Link
                 to={`/exam/${id}`}
-                onClick={() => toast.remove(t.id)}
+                onClick={() => {
+                  localStorage.setItem(
+                    "examStatus",
+                    JSON.stringify({
+                      examId: id,
+                      access: "granted",
+                    })
+                  )
+                  toast.remove(t.id)
+                }}
                 className="flex justify-center items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700"
               >
                 Yes

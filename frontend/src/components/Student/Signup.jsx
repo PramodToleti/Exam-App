@@ -11,6 +11,7 @@ const Signup = () => {
     formState: { errors },
   } = useForm()
   const [loading, setloading] = useState(false)
+  const [institutes, setInstitutes] = useState([])
   const history = useHistory()
 
   useEffect(() => {
@@ -23,6 +24,35 @@ const Signup = () => {
 
     checkUserLogin()
   }, [history])
+
+  useEffect(() => {
+    const getInstitutes = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:9004/api/institutes/all",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+
+        if (response.ok) {
+          const result = await response.json()
+          setInstitutes(result.institutes)
+        } else {
+          const result = await response.json()
+          toast.error(result.msg)
+        }
+      } catch (error) {
+        console.log(error)
+        toast.error("Something went wrong")
+      }
+    }
+
+    getInstitutes()
+  }, [])
 
   const onSubmit = async (data) => {
     if (data.password !== data.confirmPassword) {
@@ -55,7 +85,7 @@ const Signup = () => {
         setloading(false)
         return history.push({
           pathname: "/student/email-verification",
-          state: { email: rest.email , from: "signup"},
+          state: { email: rest.email, from: "signup" },
         })
       } else {
         const result = await response.json()
@@ -143,9 +173,15 @@ const Signup = () => {
                   })}
                 >
                   <option value="0">Select Institute</option>
-                  <option value="1">Institute 1</option>
-                  <option value="2">Institute 2</option>
-                  <option value="3">Institute 3</option>
+                  {institutes ? (
+                    institutes.map((institute, i) => (
+                      <option key={i} value={institute}>
+                        {institute}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="0">No Institutes</option>
+                  )}
                 </select>
                 {errors.institute && (
                   <span className="text-red-500  text-sm">

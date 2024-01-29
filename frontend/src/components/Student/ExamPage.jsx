@@ -14,6 +14,11 @@ const ExamPage = () => {
   const history = useHistory()
   const [answers, setAnswers] = useState([])
   const [loading, setLoading] = useState(false)
+  const examStatus = JSON.parse(localStorage.getItem("examStatus"))
+
+  if (examStatus?.access !== "granted") {
+    history.replace("/exams")
+  }
 
   function confirmSwitchTab() {
     var result = confirm("Are you sure you want to exit?")
@@ -26,7 +31,16 @@ const ExamPage = () => {
 
   const onClick = (path) => {
     const userConfirmsSwith = confirmSwitchTab()
-    if (userConfirmsSwith) history.replace(path)
+    if (userConfirmsSwith) {
+      localStorage.setItem(
+        "examStatus",
+        JSON.stringify({
+          examId: exam._id,
+          access: "denied",
+        })
+      )
+      history.replace(path)
+    }
   }
 
   useEffect(() => {
@@ -50,6 +64,13 @@ const ExamPage = () => {
                 }))
               : prevAnswers
           )
+          localStorage.setItem(
+            "examStatus",
+            JSON.stringify({
+              examId: exam[0]._id,
+              access: "granted",
+            })
+          )
         }
       } catch (error) {
         console.error("Error fetching exam:", error)
@@ -59,7 +80,7 @@ const ExamPage = () => {
     if (!isExamFetched) {
       fetchExam()
     }
-  }, [id, isExamFetched])
+  }, [id, isExamFetched, exam])
 
   useEffect(() => {
     if (isExamFetched) {
@@ -106,6 +127,13 @@ const ExamPage = () => {
 
     const userConfirmsSubmit = confirm("Are you sure you want to submit?")
     if (userConfirmsSubmit) {
+      localStorage.setItem(
+        "examStatus",
+        JSON.stringify({
+          examId: exam._id,
+          access: "denied",
+        })
+      )
       try {
         const options = {
           method: "POST",
@@ -245,12 +273,12 @@ const ExamPage = () => {
                       {exam.questions &&
                         exam.questions.map((question, i) => (
                           <li
-                            className="flex justify-between items-center"
+                            className="flex justify-between items-center px-5"
                             key={i}
                           >
                             <button
                               onClick={() => setIndex(i + 1)}
-                              className="bg-blue-400 rounded-full w-8 h-8"
+                              className="bg-blue-400 rounded-full w-8 h-8 text-white dark:text-gray-800"
                             >
                               {i + 1}
                             </button>

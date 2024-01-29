@@ -10,13 +10,13 @@ router.route("/:studentId/all").get(async (req, res) => {
     const results = await Results.find({ studentId })
 
     if (!results || results.length === 0) {
-      return res.status(404).json({ message: "No records found." })
+      return res.status(404).json({ msg: "No records found." })
     }
 
     res.status(200).json({ results })
   } catch (err) {
     console.log(err)
-    res.status(500).json({ message: "Something went wrong." })
+    res.status(500).json({ msg: "Something went wrong." })
   }
 })
 
@@ -26,13 +26,13 @@ router.route("/:studentId/:examId").get(async (req, res) => {
     const results = await Results.find({ studentId, examId })
 
     if (!results || results.length === 0) {
-      return res.status(404).json({ message: "No records found." })
+      return res.status(404).json({ msg: "No records found." })
     }
 
     res.status(200).json({ results })
   } catch (err) {
     console.error(err)
-    res.status(500).json({ message: "Something went wrong." })
+    res.status(500).json({ msg: "Something went wrong." })
   }
 })
 
@@ -42,13 +42,13 @@ router.route("/:studentId/:topic/all").get(async (req, res) => {
     const results = await Results.find({ studentId, topic })
 
     if (!results || results.length === 0) {
-      return res.status(404).json({ message: "No records found." })
+      return res.status(404).json({ msg: "No records found." })
     }
 
     res.status(200).json({ results })
   } catch (err) {
     console.error(err)
-    res.status(500).json({ message: "Something went wrong." })
+    res.status(500).json({ msg: "Something went wrong." })
   }
 })
 
@@ -59,13 +59,13 @@ router.route("/all").get(async (req, res) => {
     const results = await Results.find({})
 
     if (!results || results.length === 0) {
-      return res.status(404).json({ message: "No records found." })
+      return res.status(404).json({ msg: "No records found." })
     }
 
     res.status(200).json({ results })
   } catch (err) {
     console.error(err)
-    res.status(500).json({ message: "Something went wrong." })
+    res.status(500).json({ msg: "Something went wrong." })
   }
 })
 
@@ -75,13 +75,13 @@ router.route("/:topic").get(async (req, res) => {
     const results = await Results.find({ topic: topic })
 
     if (!results || results.length === 0) {
-      return res.status(404).json({ message: "No records found." })
+      return res.status(404).json({ msg: "No records found." })
     }
 
     res.status(200).json({ results })
   } catch (err) {
     console.error(err)
-    res.status(500).json({ message: "Something went wrong." })
+    res.status(500).json({ msg: "Something went wrong." })
   }
 })
 

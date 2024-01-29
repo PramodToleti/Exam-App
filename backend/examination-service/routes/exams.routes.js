@@ -12,7 +12,9 @@ router.route("/latest").get(async (req, res) => {
 
     const exams = await Exam.find({
       createdAt: { $gte: startDate, $lt: endDate },
-    }).sort({ createdAt: -1 })
+    })
+      .select("-questions")
+      .sort({ createdAt: -1 })
 
     if (exams.length === 0) {
       return res.status(404).json({ msg: "No latest exams" })
@@ -45,13 +47,27 @@ router.route("/:id").get(async (req, res) => {
     if (!require("mongoose").Types.ObjectId.isValid(id)) {
       return res.status(400).json({ message: "Invalid ID format." })
     }
-    const exam = await Exam.find({ _id: id }).select("-answers")
+    const exam = await Exam.find({ _id: id })
+
     if (!exam) {
       return res.status(400).json({
         msg: "No Exam found.",
       })
     }
-    res.status(200).json(exam)
+    const originalExam = exam[0]
+    const modifiedExam = {
+      title: originalExam.title,
+      description: originalExam.description,
+      _id: originalExam._id,
+      topic: originalExam.topic,
+      duration: originalExam.duration,
+      questions: originalExam.questions.map((ques) => ({
+        question: ques.question,
+        options: ques.options,
+      })),
+    }
+    //end
+    res.status(200).json({ exam: modifiedExam })
   } catch (err) {
     console.log(err)
     res.status(500).json({ msg: "Something went wrong." })
@@ -114,7 +130,7 @@ router.route("/delete/:examId").delete(async (req, res) => {
 router.route("/topic/:topic").get(async (req, res) => {
   try {
     const { topic } = req.params
-    const exams = await Exam.find({ topic: topic })
+    const exams = await Exam.find({ topic: topic }).select("-questions")
     if (!exams) {
       return res.status(400).json({
         msg: "No Exam found.",

@@ -66,7 +66,7 @@ const Navbar = () => {
     <div className="mx-auto flex justify-between items-center text-gray-800 dark:text-slate-100 mb-8">
       <div className="flex justify-between items-center w-full ">
         <Link to="/dashboard">
-        <h1 className="text-2xl px-2">SITE</h1>
+          <h1 className="text-2xl px-2">SITE</h1>
         </Link>
         <div onClick={() => setNav(!nav)} className="cursor-pointer">
           <AiOutlineMenu size={30} />
@@ -76,7 +76,7 @@ const Navbar = () => {
       <div
         className={
           nav
-            ? "fixed top-0 right-0 w-[280px] h-screen bg-slate-400 text-white  dark:bg-gray-700 dark:text-white z-10 duration-300"
+            ? "fixed top-0 right-0 w-[280px] h-screen bg-slate-500 text-white  dark:bg-gray-700 dark:text-white z-10 duration-300"
             : "fixed top-0 right-[-100%] w-[280px] h-screen bg-white text-gray-800  z-10 duration-300"
         }
       >
@@ -85,17 +85,19 @@ const Navbar = () => {
           size={30}
           className="absolute right-4 top-4 cursor-pointer"
         />
-        <nav className="flex flex-col justify-between h-[90%] mx-4 my-4 ">
-          <ul className="flex flex-col p-4 gap-5 mt-10 mr-16">
+        <nav className="flex flex-col justify-between h-[90%] my-4 ">
+          <ul className="flex flex-col gap-5 mt-14">
             {menuItems.map(({ icon, text, link }, index) => {
               return (
                 <Link
                   key={index}
                   to={link}
-                  className="text-xl flex gap-2 cursor-pointer  w-[50%] rounded-full mx-auto p-2 py-4"
+                  className="text-xl flex gap-2 cursor-pointer justify-center w-full h-15 mx-auto w-fit-content py-4 hover:bg-slate-400 dark:hover:bg-gray-800 transition-all duration-200"
                 >
-                  <li>{icon}</li>
-                  <p className="text-center">{text}</p>
+                  <div className="flex gap-2 w-[50%]">
+                    <li>{icon}</li>
+                    <p className="text-center">{text}</p>
+                  </div>
                 </Link>
               )
             })}

@@ -58,8 +58,12 @@ const ExamResult = () => {
                   className="bg-white text-dark dark:text-white dark:bg-slate-800 rounded-lg shadow-md p-4 mb-4 max-w-lg w-full flex flex-col items-center"
                   key={index}
                 >
-                  <h1 className="text-xl font-medium mb-4">{result.title}</h1>
-                  <p className="mb-4">{result.topic}</p>
+                  <h1 className="text-xl font-medium mb-4  text-blue-500 dark:text-blue-300">
+                    {result.title}
+                  </h1>
+                  <span className=" px-2.5 py-0.5 mb-2 rounded-full text-xs font-medium bg-blue-100 border-2 border-blue-300 text-blue-800">
+                    {result.topic}
+                  </span>
                   <div className="flex flex-col md:flex-row justify-between">
                     <div className="flex flex-col">
                       <h2 className="text-4xl font-medium self-center mb-6 mt-4 h-12 text-center  rounded-full">
@@ -68,13 +72,13 @@ const ExamResult = () => {
                       <div className="flex flex-col md:flex-row justify-between gap-6 mb-4">
                         <div className="flex flex-col gap-3 items-center">
                           <p className=" text-lg">Correct answers</p>
-                          <p className="font-medium text-lg md:text-xl">
+                          <p className="font-medium text-lg md:text-xl text-green-500">
                             {result.noOfCorrectAnswers}
                           </p>
                         </div>
                         <div className="flex flex-col gap-3 items-center">
                           <p className="text-lg">Wrong answers</p>
-                          <p className=" font-medium text-lg md:text-xl">
+                          <p className=" font-medium text-lg md:text-xl text-red-500">
                             {result.noOfWrongAnswers}
                           </p>
                         </div>

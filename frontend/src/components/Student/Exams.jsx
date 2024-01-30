@@ -2,10 +2,11 @@ import { useEffect, useState } from "react"
 import Navbar from "./Navbar"
 import toast from "react-hot-toast"
 import { Link } from "react-router-dom"
-
+import PropTypes from "prop-types"
 import Loading from "./Loading"
 
-const Exams = () => {
+const Exams = ({ latestExams }) => {
+  console.log(latestExams)
   const [exams, setexams] = useState([])
   const [loading, setLoading] = useState(false)
 
@@ -18,8 +19,7 @@ const Exams = () => {
       console.log(result)
       setexams(result.exams)
     }
-
-    fetchExams()
+    latestExams.length ? setexams(latestExams) : fetchExams()
   }, [])
 
   const handleStart = (id) => {
@@ -71,7 +71,7 @@ const Exams = () => {
   return (
     <section className="bg-slate-100 dark:bg-gray-900 py-4 md:py-10 min-h-screen">
       <div className="container mx-auto px-4">
-        <Navbar />
+        {!latestExams.length && <Navbar />}
 
         {loading ? (
           <Loading />
@@ -127,6 +127,10 @@ const Exams = () => {
       </div>
     </section>
   )
+}
+
+Exams.propTypes = {
+  latestExams: PropTypes.array.isRequired,
 }
 
 export default Exams

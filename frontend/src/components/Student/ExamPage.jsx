@@ -172,6 +172,7 @@ const ExamPage = () => {
         <form className="container mx-auto p-3" onSubmit={onSubmit}>
           <div className="md:hidden flex justify-between items-center mb-4">
             <button
+              type="button"
               onClick={() => onClick("/exams")}
               className="flex justify-center items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-red-600 hover:bg-red-700"
             >

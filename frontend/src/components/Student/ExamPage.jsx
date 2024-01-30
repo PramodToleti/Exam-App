@@ -67,7 +67,7 @@ const ExamPage = () => {
           localStorage.setItem(
             "examStatus",
             JSON.stringify({
-              examId: exam[0]._id,
+              examId: result[0]._id,
               access: "granted",
             })
           )

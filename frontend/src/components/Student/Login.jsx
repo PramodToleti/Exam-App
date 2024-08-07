@@ -45,7 +45,7 @@ const Login = () => {
       }
 
       const response = await fetch(
-        "http://localhost:9001/api/student/login",
+        "https://exam-app-rnlu.onrender.com/api/student/login",
         options
       )
 

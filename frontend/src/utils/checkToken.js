@@ -9,7 +9,7 @@ export const checkToken = async () => {
 
   try {
     const response = await fetch(
-      "http://localhost:9001/api/student/auth/redirect",
+      "https://exam-app-rnlu.onrender.com/api/student/auth/redirect",
       options
     )
 

@@ -47,7 +47,7 @@ const EmailVerification = ({ title, footer, link }) => {
       }
 
       const response = await fetch(
-        "http://localhost:9001/api/student/email-verification",
+        "https://exam-app-rnlu.onrender.com/api/student/email-verification",
         options
       )
 

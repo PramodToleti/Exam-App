@@ -9,10 +9,13 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:9002/api/exams/latest", {
-          method: "GET",
-          credentials: "include",
-        })
+        const response = await fetch(
+          "https://exam-app-rnlu.onrender.com/api/exams/latest",
+          {
+            method: "GET",
+            credentials: "include",
+          }
+        )
         if (response.ok) {
           const data = await response.json()
           setLatestExams(data)

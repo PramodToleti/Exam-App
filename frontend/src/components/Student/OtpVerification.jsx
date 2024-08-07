@@ -79,7 +79,7 @@ const OtpVerification = () => {
       }
 
       const response = await fetch(
-        "http://localhost:9001/api/student/otp-verification",
+        "https://exam-app-rnlu.onrender.com/api/student/otp-verification",
         options
       )
 
@@ -87,7 +87,7 @@ const OtpVerification = () => {
         setLoading(false)
         if (location.state?.from === "signup") {
           const activateAccount = await fetch(
-            "http://localhost:9001/api/student/activate-account",
+            "https://exam-app-rnlu.onrender.com/api/student/activate-account",
             {
               method: "POST",
               headers: {
@@ -140,7 +140,7 @@ const OtpVerification = () => {
       }
 
       const response = await fetch(
-        "http://localhost:9001/api/student/email-verification",
+        "https://exam-app-rnlu.onrender.com/api/student/email-verification",
         options
       )
 

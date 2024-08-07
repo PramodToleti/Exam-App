@@ -48,7 +48,9 @@ const ExamPage = () => {
     const fetchExam = async () => {
       try {
         setLoading(true)
-        const response = await fetch(`http://localhost:9002/api/exams/${id}`)
+        const response = await fetch(
+          `https://exam-app-rnlu.onrender.com/api/exams/${id}`
+        )
         const result = await response.json()
         setLoading(false)
         if (response.ok) {
@@ -145,7 +147,7 @@ const ExamPage = () => {
         }
         setLoading(true)
         const response = await fetch(
-          "http://localhost:9002/api/exams/submit",
+          "https://exam-app-rnlu.onrender.com/api/exams/submit",
           options
         )
         setLoading(false)

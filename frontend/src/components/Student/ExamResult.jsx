@@ -13,7 +13,7 @@ const ExamResult = () => {
     const getResult = async () => {
       setLoading(true)
       const res = await fetch(
-        `http://localhost:9003/api/results/${studentId}/${examId}`,
+        `https://exam-app-rnlu.onrender.com/api/results/${studentId}/${examId}`,
         {
           method: "GET",
           headers: {

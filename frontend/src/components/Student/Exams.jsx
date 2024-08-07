@@ -13,7 +13,9 @@ const Exams = ({ latestExams }) => {
   useEffect(() => {
     const fetchExams = async () => {
       setLoading(true)
-      const response = await fetch("http://localhost:9002/api/exams/all")
+      const response = await fetch(
+        "https://exam-app-rnlu.onrender.com/api/exams/all"
+      )
       const result = await response.json()
       setLoading(false)
       console.log(result)

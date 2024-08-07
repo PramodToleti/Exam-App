@@ -29,7 +29,7 @@ const Signup = () => {
     const getInstitutes = async () => {
       try {
         const response = await fetch(
-          "http://localhost:9004/api/institutes/all",
+          "https://exam-app-rnlu.onrender.com/api/institutes/all",
           {
             method: "GET",
             headers: {
@@ -77,7 +77,7 @@ const Signup = () => {
       }
 
       const response = await fetch(
-        "http://localhost:9001/api/student/signup",
+        "https://exam-app-rnlu.onrender.com/api/student/signup",
         options
       )
 

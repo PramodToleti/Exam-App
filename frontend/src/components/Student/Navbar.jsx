@@ -44,7 +44,7 @@ const Navbar = () => {
       }
 
       const response = await fetch(
-        "http://localhost:9001/api/student/logout",
+        "https://exam-app-rnlu.onrender.com/api/student/logout",
         options
       )
 

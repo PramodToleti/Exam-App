@@ -8,7 +8,7 @@ const Results = () => {
   useEffect(() => {
     const getResult = async () => {
       const res = await fetch(
-        `http://localhost:9003/api/results/${studentId}/all`,
+        `https://exam-app-rnlu.onrender.com/api/results/${studentId}/all`,
         {
           method: "GET",
           headers: {
